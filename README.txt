@@ -6,6 +6,10 @@ Installation Guide :
   curl -sSL https://dokploy.com/install.sh | sh
 
 
+App Architecture 
+-----------------
+
+
 
                  ┌────────────────────┐
                  │    Frontend UI     │

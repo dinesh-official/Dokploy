@@ -41,58 +41,61 @@ Installation Guide :
 ------------------------------------------------------------------------------------------------------------------------
 
 
-                    Developer
-                        │
-                 git push origin main
-                        │
-                        ▼
-             ┌────────────────────┐
-             │  GitHub / GitLab   │
-             └─────────┬──────────┘
-                       │ Webhook
-                       ▼
-             ┌────────────────────┐
-             │      Dokploy       │
-             │ Deployment Engine  │
-             └─────────┬──────────┘
-                       │
-          ┌────────────┼────────────┐
-          │            │            │
-          ▼            ▼            ▼
-    Clone Repo     Read Config    Queue Build
-          │            │            │
-          └────────────┼────────────┘
-                       ▼
-             ┌────────────────────┐
-             │   Build Container  │
-             │  docker build      │
-             └─────────┬──────────┘
-                       │
-                 Create Image
-                       │
-                       ▼
-             ┌────────────────────┐
-             │ Docker Swarm       │
-             │ Service Deployment │
-             └─────────┬──────────┘
-                       │
-       ┌───────────────┼────────────────┐
-       ▼               ▼                ▼
-Frontend Service  Backend Service  Database Service
-       │               │                │
-       └───────────────┼────────────────┘
-                       ▼
-               Docker Overlay Network
-                       │
-                       ▼
-             ┌────────────────────┐
-             │      Traefik       │
-             │ Reverse Proxy SSL  │
-             └─────────┬──────────┘
-                       │
-                 HTTP / HTTPS
-                       │
-                       ▼
-                    Users
+
+                           ┌──────────────────┐
+                           │    Developer     │
+                           └────────┬─────────┘
+                                    │
+                              Git Push/Webhook
+                                    │
+                                    ▼
+                     ┌──────────────────────────┐
+                     │         Dokploy          │
+                     │ Deployment Controller    │
+                     └──────────┬───────────────┘
+                                │
+                    Docker API / Swarm API
+                                │
+                                ▼
+                 ┌─────────────────────────────┐
+                 │       Docker Swarm          │
+                 │   Orchestration Manager     │
+                 └──────────┬──────────────────┘
+                            │
+        ┌───────────────────┼────────────────────┐
+        │                   │                    │
+        ▼                   ▼                    ▼
+ ┌──────────────┐   ┌──────────────┐    ┌──────────────┐
+ │ Service Mgmt │   │ Overlay Net  │    │ Secret Mgmt  │
+ │ Replica Ctrl │   │ Service DNS  │    │ Docker Secret│
+ └──────┬───────┘   └──────┬───────┘    └──────┬───────┘
+        │                  │                   │
+        └──────────────────┼───────────────────┘
+                           ▼
+               ┌─────────────────────────┐
+               │     Worker Nodes        │
+               │   Container Runtime     │
+               └──────────┬──────────────┘
+                          │
+       ┌──────────────────┼──────────────────┐
+       ▼                  ▼                  ▼
+Frontend Container  Backend Container  Database Container
+       │                  │                  │
+       └──────────────────┼──────────────────┘
+                          ▼
+                 ┌──────────────────┐
+                 │     Traefik      │
+                 │ Ingress/Proxy    │
+                 └────────┬─────────┘
+                          │
+                    HTTP / HTTPS
+                          │
+                          ▼
+                        Users
+
+
+
+
+
 
 
